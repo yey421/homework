@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Homework1,2</title>
+    <!-- Required meta tags -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <!-- JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+            crossorigin="anonymous"></script>
+
+    <!-- 구글폰트 -->
+    <link href="https://fonts.googleapis.com/css?family=Stylish&display=swap" rel="stylesheet">
+
+    <style type="text/css">
+        * {
+            font-family: 'Stylish', sans-serif;
+        }
+
+        .wrap {
+            margin-left: 200px;
+            margin-right: 200px;
+        }
+
+        .row {
+            margin-top: 50px;
+            display: flex;
+            text-align: center;
+        }
+
+        .column {
+            float: left;
+            flex: 33.33%;
+            padding-left: 0.1px;
+        }
+
+        .img {
+            margin-top: 50px;
+            text-align: center;
+        }
+
+        .inline1 {
+            font-size: 2em;
+            font-weight: bolder;
+        }
+
+        .inline2 {
+            margin-left: 30px;
+            font-size: 1em;
+
+        }
+
+        .inline3 {
+            color: blue;
+            font-weight: bold;
+
+        }
+
+        .explanation {
+            margin-top: 50px;
+            margin-left: 200px;
+            margin-right: 100px;
+        }
+
+        .space {
+            margin-left: 10px;
+            margin-top: 5px;
+            margin-bottom: 5px;
+        }
+
+        .center-body {
+            text-align: center;
+        }
+    </style>
+    <script>
+        function order() {
+            if ($('#inputname').val() === "") {
+                alert('이름을 입력해주세요');
+            } else if ($('#inputvalue').val() === "") {
+                alert('수량을 입력해주세요');
+            } else if ($('#inputAddress').val() === "") {
+                alert('주소 입력해주세요');
+            } else if ($('#inputcellphonenumber').val() === "") {
+                alert('번호를 입력해주세요');
+            } else {
+                alert('주문이 완료되었습니다.');
+            }
+        }
+
+        $(document).ready(function () {
+            alert('다 로딩됐다!');
+            $.ajax({
+                    type: "GET",
+                    url: "https://api.manana.kr/exchange/rate.json",
+                    data: {},
+                    success: function (response) {
+                        let rate = response[1]['rate'];
+                        $('#rate').append(rate);
+                    }
+                }
+            )
+        });
+
+
+        function change_to_color(color) {
+            alert("wait a second!")
+            var x = color;
+            var se2 = document.getElementById("se2");
+            se2.src = "https://store.storeimages.cdn-apple.com/8756/as-images.apple.com/is/iphone-se-" + x + "-select-2020?wid=940&hei=1112&fmt=png-alpha&qlt=80&.v=1586574260319";
+        }
+    </script>
+</head>
+<body>
+<div class="wrap">
+    <!--insertion of image-->
+    <div class="img">
+        <img id="se2"
+             src="https://store.storeimages.cdn-apple.com/8756/as-images.apple.com/is/iphone-se-white-select-2020?wid=940&hei=1112&fmt=png-alpha&qlt=80&.v=1586574260319"
+             width="400" height="400" class="rounded mx-auto d-block" alt="DEFAULT(WHITE)">
+        <h5>원하시는 색상을 클릭하세요</h5>
+    </div>
+    <div class="row">
+        <div class="column">
+            <img onclick="change_to_color('black')" src="black.png" alt="Black_color" style="width:80%">
+        </div>
+        <div class="column">
+            <img onclick="change_to_color('red')" src="red.png" alt="Red_color" style="width:80%">
+        </div>
+        <div class="column">
+            <img onclick="change_to_color('white')" src="white.png" alt="White_color" style="width:80%">
+        </div>
+    </div>
+
+    <div class="explanation">
+        <!--object and price into one paragraph-->
+        <p><span class="inline1">iPhone SE2</span><span class="inline2">가격: ₩550,000/개</span></p>
+        <p>4.7인치형 Retina HD 디스플레이 앱 시작도 , AR 구동도,3D 게임도 더욱 빠르게. 그냥 찍어도 걸작.<br> <!--<br> means enter no need /br-->
+            사진 다운로드, 파일 백업도, 음악 스트리밍도 훨씬 빨라진 속도로. 튀어도 쏟아져도 거뜬한 생활 방수...</p>
+        <p>
+        <h1>주문하기</h1><span class="inline3" id="rate">달러-원 환율: </span></p>
+        <div class="form-inline">
+            <div class="form-group">
+                <label for="inputname"> 주문자 성함: </label>
+                <input type="text" class="form-control space" id="inputname" placeholder="이름">
+            </div>
+        </div>
+        <div class="form-inline">
+            <div class="form-group">
+                <label for="inputvalue"> 수량: </label>
+                <select class="form-control space" id="inputvalue">
+                    <option selected value=""> -- 수량을 선택하세요 --</option>
+                    <option>1</option>
+                    <option>2</option>
+                    <option>3</option>
+                    <option>4</option>
+                    <option>5</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-inline">
+            <div class="form-group">
+                <label for="inputAddress"> 주소: </label>
+                <input type="text" class="form-control space" id="inputAddress" placeholder="주소">
+            </div>
+        </div>
+        <div class="form-inline">
+            <div class="form-group">
+                <label for="inputcellphonenumber"> 번호: </label>
+                <input type="text" class="form-control space" id="inputcellphonenumber" placeholder="번호">
+            </div>
+        </div>
+    </div>
+</div>
+<div class="center-body">
+    <button onclick="order()" type="submit" class="btn btn-primary mb-2">주문하기</button>
+</div>
+</body>
+</html>
