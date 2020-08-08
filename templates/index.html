@@ -78,9 +78,19 @@
         .center-body {
             text-align: center;
         }
+
+        .orders {
+            margin-top: 100px;
+        }
     </style>
     <script>
         function order() {
+
+            let name = $('#inputname').val()
+            let value = $('#inputvalue').val()
+            let address = $('#inputAddress').val()
+            let phone = $('#inputcellphonenumber').val()
+
             if ($('#inputname').val() === "") {
                 alert('이름을 입력해주세요');
             } else if ($('#inputvalue').val() === "") {
@@ -92,10 +102,25 @@
             } else {
                 alert('주문이 완료되었습니다.');
             }
+            $.ajax({
+                type: "POST", // POST 방식으로 요청하겠다.
+                url: "/order", // /memo라는 url에 요청하겠다.
+                data: {name_give: name, value_give: value, address_give: address, phone_give: phone}, // 데이터를 주는 방법
+                success: function (response) { // 성공하면
+                    if (response["result"] == "success") {
+                        alert("주문 성공!");
+                       // 3. 성공 시 페이지 새로고침하기
+                        window.location.reload();
+                    } else {
+                        alert("서버 오류!")
+                    }
+                }
+            })
         }
-        //
+
         $(document).ready(function () {
             alert('다 로딩됐다!');
+            showOrders()
             $.ajax({
                     type: "GET",
                     url: "https://api.manana.kr/exchange/rate.json",
@@ -115,6 +140,32 @@
             var se2 = document.getElementById("se2");
             se2.src = "https://store.storeimages.cdn-apple.com/8756/as-images.apple.com/is/iphone-se-" + x + "-select-2020?wid=940&hei=1112&fmt=png-alpha&qlt=80&.v=1586574260319";
         }
+
+        function showOrders() {
+            // 주문 목록보기 API 를 사용해 여기를 채워주세요
+            $.ajax({
+                type: "GET",
+                url: "/order",
+                data: {},
+                success: function (response) {
+                    let orders = response["orders"];
+                    for (let i = 0; i < orders.length; i++) {
+                        makeOrderRow(orders[i]['name'], orders[i]['value'], orders[i]['address'], orders[i]['phone'])
+                    }
+                }
+            })
+        }
+
+        function makeOrderRow(name, value, address, phone) {
+            let tempHtml = `<tr>\
+                                <td>${name}</td>
+                                <td>${value}</td>
+                                <td>${address}</td>
+                                <td>${phone}</td>
+                              </tr>`;
+
+            $("#orders-box").append(tempHtml);
+        }
     </script>
 </head>
 <body>
@@ -128,13 +179,13 @@
     </div>
     <div class="row">
         <div class="column">
-            <img onclick="change_to_color('black')" src="black.png" alt="Black_color" style="width:80%">
+            <img onclick="change_to_color('black')" src="../static/black.png" alt="Black_color" style="width:80%">
         </div>
         <div class="column">
-            <img onclick="change_to_color('red')" src="red.png" alt="Red_color" style="width:80%">
+            <img onclick="change_to_color('red')" src="../static/red.png" alt="Red_color" style="width:80%">
         </div>
         <div class="column">
-            <img onclick="change_to_color('white')" src="white.png" alt="White_color" style="width:80%">
+            <img onclick="change_to_color('white')" src="../static/white.png" alt="White_color" style="width:80%">
         </div>
     </div>
 
@@ -180,6 +231,26 @@
 </div>
 <div class="center-body">
     <button onclick="order()" type="submit" class="btn btn-primary mb-2">주문하기</button>
+</div>
+<div class="orders">
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">이름</th>
+            <th scope="col">수량</th>
+            <th scope="col">주소</th>
+            <th scope="col">전화번호</th>
+        </tr>
+        </thead>
+        <tbody id="orders-box">
+        <tr>
+            <td>가나다</td>
+            <td>3</td>
+            <td>뚜시 뚜시</td>
+            <td>010-1234-5678</td>
+        </tr>
+        </tbody>
+    </table>
 </div>
 </body>
 </html>
